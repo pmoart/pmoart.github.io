@@ -13,15 +13,29 @@
 @font-face{font-family:'Montserrat';font-style:italic;font-weight:400;font-display:swap;src:url(./fonts/montserrat-italic-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
 @font-face{font-family:'Montserrat';font-style:italic;font-weight:400;font-display:swap;src:url(./fonts/montserrat-italic-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 
-/* Concept styles (verbatim) */
+/* Concept styles (verbatim; rules shared by the desktop and mobile concepts) */
 html,body{margin:0;padding:0;background:#fff;color:#111;-webkit-font-smoothing:antialiased}
 *{box-sizing:border-box}
 a{color:inherit;text-decoration:none}
 a:hover{color:inherit;opacity:.7}
-::selection{background:#111;color:#fff}
+@media (min-width:768px){
+  ::selection{background:#111;color:#fff}
+}
+@media (max-width:767px){
+  *{-webkit-tap-highlight-color:transparent}
+  html{scroll-behavior:smooth}
+  img{display:block;width:100%}
+  section[id]{scroll-margin-top:60px}
+}
 
-/* Standalone runtime: image slots, hover states, conditional blocks */
+/* Desktop concept below 768px is swapped for the mobile concept */
+@media (max-width:767px){.v-dsk{display:none!important}}
+@media (min-width:768px){.v-mob{display:none!important}}
+
+/* Standalone runtime: image slots, hover/active states, conditional blocks */
 [hidden]{display:none!important}
+.act-dark:active{background:#111!important;color:#fff!important}
+.v-mob summary::-webkit-details-marker{display:none}
 .slot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .hv-dark:hover{background:#111!important;color:#fff!important;opacity:1!important}
 .hv-ev:hover{background:#111!important;color:#fff!important;opacity:1!important;padding-left:28px!important}
@@ -31,7 +45,7 @@ a:hover{color:inherit;opacity:.7}
 </style>
 </head>
 <body>
-<div id="root" style="font-family:'Montserrat','Helvetica Neue',Helvetica,Arial,sans-serif;background:#fff;color:#111;overflow-x:clip">
+<div id="root" class="v-dsk" style="font-family:'Montserrat','Helvetica Neue',Helvetica,Arial,sans-serif;background:#fff;color:#111;overflow-x:clip">
 
   <header id="hdr" style="position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:18px clamp(20px,4vw,56px);background:rgba(255,255,255,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(0,0,0,.08);transition:transform .5s cubic-bezier(.2,.7,.2,1)">
     <a href="#top" style="display:flex;flex-direction:column;line-height:1;font-weight:800;letter-spacing:.18em;font-size:15px">
@@ -361,6 +375,239 @@ a:hover{color:inherit;opacity:.7}
     </div>
   </footer>
 </div>
+<!-- ===================== Mobile concept (Parrish Redesign - Mobile) ===================== -->
+<div id="mroot" class="v-mob" style="font-family:'Montserrat','Helvetica Neue',Helvetica,Arial,sans-serif;background:#fff;color:#111;overflow-x:clip">
+
+<header id="m-hdr" style="position:fixed;top:0;left:0;right:0;z-index:50;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 8px 0 20px;background:rgba(255,255,255,.9);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(0,0,0,.08);transition:transform .45s cubic-bezier(.2,.7,.2,1)">
+  <a href="#m-top" style="display:flex;flex-direction:column;line-height:1;font-weight:800;letter-spacing:.18em;font-size:14px"><span>PARRISH</span><span style="font-weight:400;font-size:9px;letter-spacing:.32em;margin-top:4px">ART MUSEUM</span></a>
+  <div style="display:flex;align-items:center;gap:6px">
+    <a href="#m-visit" style="height:40px;padding:0 12px;display:flex;align-items:center;border:1px solid #111;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase">Tickets</a>
+    <button type="button" data-m-menu aria-label="Menu" style="width:44px;height:40px;background:#111;color:#fff;border:0;display:grid;place-items:center;cursor:pointer"><span style="display:flex;flex-direction:column;gap:5px"><span style="width:18px;height:1.5px;background:#fff"></span><span style="width:18px;height:1.5px;background:#fff"></span></span></button>
+  </div>
+</header>
+
+<div id="m-menu" hidden style="position:fixed;inset:0;z-index:60;background:#111;color:#fff;overflow:auto;display:flex;flex-direction:column">
+  <div style="height:60px;flex:none;display:flex;justify-content:space-between;align-items:center;padding:0 8px 0 20px;border-bottom:1px solid rgba(255,255,255,.2)">
+    <span style="font-weight:800;letter-spacing:.18em;font-size:14px">PARRISH</span>
+    <button type="button" data-m-menu style="height:40px;padding:0 14px;background:#fff;color:#111;border:0;font:inherit;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;cursor:pointer">Close ✕</button>
+  </div>
+  <div style="padding:8px 20px 40px">
+    <details style="border-bottom:1px solid rgba(255,255,255,.2)">
+      <summary style="list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:20px 0;font-size:24px;font-weight:700;letter-spacing:-.01em">Visit<span style="font-size:20px;font-weight:400">+</span></summary>
+      <div style="display:flex;flex-direction:column;padding:0 0 18px"><a href="#m-top" data-m-menu style="padding:10px 0;font-size:15px;color:#d6d6d6">Plan Your Visit</a><a href="#m-top" data-m-menu style="padding:10px 0;font-size:15px;color:#d6d6d6">Museum Shop</a><a href="#m-top" data-m-menu style="padding:10px 0;font-size:15px;color:#d6d6d6">Café</a><a href="#m-top" data-m-menu style="padding:10px 0;font-size:15px;color:#d6d6d6">Accessibility</a><a href="#m-top" data-m-menu style="padding:10px 0;font-size:15px;color:#d6d6d6">Digital Guide</a></div>
+    </details>
+    <details style="border-bottom:1px solid rgba(255,255,255,.2)">
+      <summary style="list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:20px 0;font-size:24px;font-weight:700;letter-spacing:-.01em">Art &amp; Artists<span style="font-size:20px;font-weight:400">+</span></summary>
+      <div style="display:flex;flex-direction:column;padding:0 0 18px"><a href="#m-top" data-m-menu style="padding:10px 0;font-size:15px;color:#d6d6d6">Collection</a><a href="#m-top" data-m-menu style="padding:10px 0;font-size:15px;color:#d6d6d6">Artist Stories</a><a href="#m-top" data-m-menu style="padding:10px 0;font-size:15px;color:#d6d6d6">Artist Timeline</a><a href="#m-top" data-m-menu style="padding:10px 0;font-size:15px;color:#d6d6d6">Artist Places</a></div>
+    </details>
+    <details style="border-bottom:1px solid rgba(255,255,255,.2)">
+      <summary style="list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:20px 0;font-size:24px;font-weight:700;letter-spacing:-.01em">Exhibitions<span style="font-size:20px;font-weight:400">+</span></summary>
+      <div style="display:flex;flex-direction:column;padding:0 0 18px"><a href="#m-top" data-m-menu style="padding:10px 0;font-size:15px;color:#d6d6d6">On View</a><a href="#m-top" data-m-menu style="padding:10px 0;font-size:15px;color:#d6d6d6">Upcoming</a><a href="#m-top" data-m-menu style="padding:10px 0;font-size:15px;color:#d6d6d6">Past Exhibitions</a><a href="#m-top" data-m-menu style="padding:10px 0;font-size:15px;color:#d6d6d6">Road Show</a></div>
+    </details>
+    <details style="border-bottom:1px solid rgba(255,255,255,.2)">
+      <summary style="list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:20px 0;font-size:24px;font-weight:700;letter-spacing:-.01em">Programs &amp; Events<span style="font-size:20px;font-weight:400">+</span></summary>
+      <div style="display:flex;flex-direction:column;padding:0 0 18px"><a href="#m-top" data-m-menu style="padding:10px 0;font-size:15px;color:#d6d6d6">Public Programs</a><a href="#m-top" data-m-menu style="padding:10px 0;font-size:15px;color:#d6d6d6">Online</a><a href="#m-top" data-m-menu style="padding:10px 0;font-size:15px;color:#d6d6d6">Member Events</a><a href="#m-top" data-m-menu style="padding:10px 0;font-size:15px;color:#d6d6d6">Benefit Events</a></div>
+    </details>
+    <details style="border-bottom:1px solid rgba(255,255,255,.2)">
+      <summary style="list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:20px 0;font-size:24px;font-weight:700;letter-spacing:-.01em">Education<span style="font-size:20px;font-weight:400">+</span></summary>
+      <div style="display:flex;flex-direction:column;padding:0 0 18px"><a href="#m-top" data-m-menu style="padding:10px 0;font-size:15px;color:#d6d6d6">Children &amp; Family</a><a href="#m-top" data-m-menu style="padding:10px 0;font-size:15px;color:#d6d6d6">Teen Programs</a><a href="#m-top" data-m-menu style="padding:10px 0;font-size:15px;color:#d6d6d6">Summer Camp</a><a href="#m-top" data-m-menu style="padding:10px 0;font-size:15px;color:#d6d6d6">School Programs</a></div>
+    </details>
+    <details style="border-bottom:1px solid rgba(255,255,255,.2)">
+      <summary style="list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:20px 0;font-size:24px;font-weight:700;letter-spacing:-.01em">About<span style="font-size:20px;font-weight:400">+</span></summary>
+      <div style="display:flex;flex-direction:column;padding:0 0 18px"><a href="#m-top" data-m-menu style="padding:10px 0;font-size:15px;color:#d6d6d6">News</a><a href="#m-top" data-m-menu style="padding:10px 0;font-size:15px;color:#d6d6d6">History</a><a href="#m-top" data-m-menu style="padding:10px 0;font-size:15px;color:#d6d6d6">Architecture</a><a href="#m-top" data-m-menu style="padding:10px 0;font-size:15px;color:#d6d6d6">Staff &amp; Trustees</a></div>
+    </details>
+    <details style="border-bottom:1px solid rgba(255,255,255,.2)">
+      <summary style="list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:20px 0;font-size:24px;font-weight:700;letter-spacing:-.01em">Join &amp; Give<span style="font-size:20px;font-weight:400">+</span></summary>
+      <div style="display:flex;flex-direction:column;padding:0 0 18px"><a href="#m-top" data-m-menu style="padding:10px 0;font-size:15px;color:#d6d6d6">Donate</a><a href="#m-top" data-m-menu style="padding:10px 0;font-size:15px;color:#d6d6d6">Membership</a><a href="#m-top" data-m-menu style="padding:10px 0;font-size:15px;color:#d6d6d6">Business Membership</a></div>
+    </details>
+  </div>
+</div>
+
+<section id="m-top" style="position:relative;height:160svh">
+  <div style="position:sticky;top:0;height:100svh;overflow:hidden">
+    <div id="m-heroTitle" style="position:absolute;left:20px;right:20px;top:88px;display:flex;flex-direction:column;gap:14px;will-change:transform">
+      <div style="display:flex;gap:8px 10px;align-items:center;flex-wrap:wrap;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase">
+        <span style="background:#111;color:#fff;padding:6px 10px">Now on view</span><span>Aug 1 – Nov 8</span>
+      </div>
+      <h1 style="margin:0;font-size:clamp(40px,12.5vw,60px);line-height:.92;font-weight:800;letter-spacing:-.035em;text-transform:uppercase">Until the moon comes over</h1>
+    </div>
+    <div id="m-heroImg" style="position:absolute;inset:0;clip-path:inset(52% 5% 6% 5%);will-change:clip-path">
+      <img id="m-heroScale" src="./uploads/038_Parrish_Aug2026_2994_edited_small-1400x934.jpg" alt="Installation view — Until the Moon Comes Over the Mountain" style="position:absolute;inset:0;height:100%;object-fit:cover;transform:scale(1.15);will-change:transform"/>
+      <div id="m-heroCap" style="position:absolute;left:20px;right:20px;bottom:28px;opacity:0;transition:opacity .4s;pointer-events:none">
+        <a href="#m-on-view" style="pointer-events:auto;height:52px;display:flex;align-items:center;justify-content:center;background:#fff;color:#111;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase">Explore the exhibition →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div style="background:#111;color:#fff;overflow:hidden;padding:16px 0">
+  <div id="m-marq" style="display:flex;width:max-content;will-change:transform;font-size:16px;font-weight:600;letter-spacing:.02em;text-transform:uppercase">
+    <span style="display:flex;align-items:center;gap:24px;padding-right:24px;white-space:nowrap"><span>Thursday – Monday · 11 AM – 5 PM</span><span style="width:7px;height:7px;background:#fff;transform:rotate(45deg)"></span></span>
+    <span style="display:flex;align-items:center;gap:24px;padding-right:24px;white-space:nowrap"><span>Grounds open daily</span><span style="width:7px;height:7px;background:#fff;transform:rotate(45deg)"></span></span>
+    <span style="display:flex;align-items:center;gap:24px;padding-right:24px;white-space:nowrap"><span>Water Mill, New York</span><span style="width:7px;height:7px;background:#fff;transform:rotate(45deg)"></span></span>
+    <span style="display:flex;align-items:center;gap:24px;padding-right:24px;white-space:nowrap"><span>Members get in free</span><span style="width:7px;height:7px;background:#fff;transform:rotate(45deg)"></span></span>
+    <span style="display:flex;align-items:center;gap:24px;padding-right:24px;white-space:nowrap"><span>Thursday – Monday · 11 AM – 5 PM</span><span style="width:7px;height:7px;background:#fff;transform:rotate(45deg)"></span></span>
+    <span style="display:flex;align-items:center;gap:24px;padding-right:24px;white-space:nowrap"><span>Grounds open daily</span><span style="width:7px;height:7px;background:#fff;transform:rotate(45deg)"></span></span>
+    <span style="display:flex;align-items:center;gap:24px;padding-right:24px;white-space:nowrap"><span>Water Mill, New York</span><span style="width:7px;height:7px;background:#fff;transform:rotate(45deg)"></span></span>
+    <span style="display:flex;align-items:center;gap:24px;padding-right:24px;white-space:nowrap"><span>Members get in free</span><span style="width:7px;height:7px;background:#fff;transform:rotate(45deg)"></span></span>
+  </div>
+</div>
+
+<section style="padding:56px 20px 8px;display:grid;gap:20px">
+  <h2 data-reveal="1" style="margin:0;font-size:32px;line-height:1.02;font-weight:700;letter-spacing:-.03em;text-wrap:balance">Art and artists of the East End, since 1898.</h2>
+  <p data-reveal="1" style="margin:0;font-size:15px;line-height:1.6;color:#444;text-wrap:pretty">Several galleries are temporarily closed for installation through <strong style="color:#111">September 25</strong>. Check what’s on view before you visit.</p>
+</section>
+
+<section id="m-on-view" style="padding:48px 0 56px">
+  <div style="padding:0 20px 24px;display:flex;justify-content:space-between;align-items:flex-end;gap:16px">
+    <h2 style="margin:0;font-size:64px;line-height:.85;font-weight:800;letter-spacing:-.045em;text-transform:uppercase">On<br/>View</h2>
+    <span style="font-size:12px;font-weight:700;letter-spacing:.14em"><span id="m-exIndex">01</span> / 05</span>
+  </div>
+  <div id="m-track" style="display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:0 20px;scroll-padding:0 20px">
+    <a href="#m-on-view" style="flex:0 0 82%;scroll-snap-align:start;display:flex;flex-direction:column;gap:14px">
+      <div style="position:relative;aspect-ratio:4/5;overflow:hidden;background:#efefef">
+        <img src="./uploads/CHA-24-035a-hr-1400x580.jpg" alt="Installation view" style="height:100%;object-fit:cover"/>
+        <span style="position:absolute;top:12px;left:12px;background:#fff;color:#111;padding:5px 9px;font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase">Galleries</span>
+      </div>
+      <div style="display:grid;gap:6px">
+        <span style="font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#555">01 · Aug 1 – Nov 8</span>
+        <h3 style="margin:0;font-size:20px;line-height:1.12;font-weight:700;letter-spacing:-.015em;text-wrap:balance">Until the Moon Comes Over the Mountain</h3>
+      </div>
+    </a>
+    <a href="#m-on-view" style="flex:0 0 82%;scroll-snap-align:start;display:flex;flex-direction:column;gap:14px">
+      <div style="position:relative;aspect-ratio:4/5;overflow:hidden;background:#efefef">
+        <img src="./uploads/Indiana-Installation-Stills-5-1400x1049.jpg" alt="Sculptures in the meadow" style="height:100%;object-fit:cover"/>
+        <span style="position:absolute;top:12px;left:12px;background:#fff;color:#111;padding:5px 9px;font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase">South Meadow</span>
+      </div>
+      <div style="display:grid;gap:6px">
+        <span style="font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#555">02 · To Jan 13, 2027</span>
+        <h3 style="margin:0;font-size:20px;line-height:1.12;font-weight:700;letter-spacing:-.015em;text-wrap:balance">Robert Indiana: ONE Through ZERO (The Ten Numbers)</h3>
+      </div>
+    </a>
+    <a href="#m-on-view" style="flex:0 0 82%;scroll-snap-align:start;display:flex;flex-direction:column;gap:14px">
+      <div style="position:relative;aspect-ratio:4/5;overflow:hidden;background:#efefef">
+        <img src="./uploads/LEAD-IMAGE_GJM8520-1400x933.jpg" alt="Installation view" style="height:100%;object-fit:cover"/>
+        <span style="position:absolute;top:12px;left:12px;background:#fff;color:#111;padding:5px 9px;font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase">Galleries</span>
+      </div>
+      <div style="display:grid;gap:6px">
+        <span style="font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#555">03 · Jun 27 – Nov 1</span>
+        <h3 style="margin:0;font-size:20px;line-height:1.12;font-weight:700;letter-spacing:-.015em;text-wrap:balance">Tony Bechara: An Artist of Many Worlds</h3>
+      </div>
+    </a>
+    <a href="#m-on-view" style="flex:0 0 82%;scroll-snap-align:start;display:flex;flex-direction:column;gap:14px">
+      <div style="position:relative;aspect-ratio:4/5;overflow:hidden;background:#efefef">
+        <img src="./uploads/WHIPT184-detail-hi-res-1400x1105.jpg" alt="Reseeding Chaco, 2026" style="height:100%;object-fit:cover"/>
+        <span style="position:absolute;top:12px;left:12px;background:#fff;color:#111;padding:5px 9px;font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase">Fresh Paint</span>
+      </div>
+      <div style="display:grid;gap:6px">
+        <span style="font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#555">04 · Jun 4 – Sep 28</span>
+        <h3 style="margin:0;font-size:20px;line-height:1.12;font-weight:700;letter-spacing:-.015em;text-wrap:balance">FRESH PAINT: Emmi Whitehorse</h3>
+      </div>
+    </a>
+    <a href="#m-on-view" style="flex:0 0 82%;scroll-snap-align:start;display:flex;flex-direction:column;gap:14px">
+      <div style="position:relative;aspect-ratio:4/5;overflow:hidden;background:#efefef">
+        <img src="./uploads/06.15.26-PARRISH-SONY-15-1400x933.jpg" alt="Rose series installation" style="height:100%;object-fit:cover"/>
+        <span style="position:absolute;top:12px;left:12px;background:#fff;color:#111;padding:5px 9px;font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase">South Meadow</span>
+      </div>
+      <div style="display:grid;gap:6px">
+        <span style="font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#555">05 · To Mar 31, 2028</span>
+        <h3 style="margin:0;font-size:20px;line-height:1.12;font-weight:700;letter-spacing:-.015em;text-wrap:balance">Will Ryman: Shanghai 6</h3>
+      </div>
+    </a>
+  </div>
+  <div style="margin:24px 20px 0;height:2px;background:#e4e4e4"><div id="m-trackBar" style="height:100%;width:20.0%;background:#111;transition:width 200ms"></div></div>
+</section>
+
+<section style="margin:0 20px;background:#111;color:#fff;padding:28px 22px;display:grid;gap:16px">
+  <span style="font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase">Opening Sept 25</span>
+  <h3 style="margin:0;font-size:24px;line-height:1.08;font-weight:700;letter-spacing:-.02em">Abstract Expressionism: The East End, 1940 to Today</h3>
+  <a href="#m-events" style="font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase">Member opening →</a>
+</section>
+
+<section id="m-events" style="margin-top:56px;padding:56px 20px;background:#f3f3f3">
+  <h2 data-reveal="1" style="margin:0 0 28px;font-size:48px;line-height:.9;font-weight:800;letter-spacing:-.04em;text-transform:uppercase">Upcoming<br/>Events</h2>
+  <div style="border-top:1px solid #111">
+    <a href="#m-events" data-reveal="1" class="act-dark" style="display:grid;grid-template-columns:60px minmax(0,1fr);gap:16px;align-items:start;padding:20px 0;border-bottom:1px solid #111">
+      <span style="display:flex;flex-direction:column;line-height:1"><span style="font-size:36px;font-weight:800;letter-spacing:-.04em">25</span><span style="font-size:10px;font-weight:700;letter-spacing:.2em;margin-top:4px">SEP</span></span>
+      <span style="display:flex;flex-direction:column;gap:6px;min-width:0"><span style="font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#555">Member Opening · 5:30 PM</span><span style="font-size:17px;font-weight:600;line-height:1.25">Abstract Expressionism: The East End, 1940 to Today</span></span>
+    </a>
+    <a href="#m-events" data-reveal="1" class="act-dark" style="display:grid;grid-template-columns:60px minmax(0,1fr);gap:16px;align-items:start;padding:20px 0;border-bottom:1px solid #111">
+      <span style="display:flex;flex-direction:column;line-height:1"><span style="font-size:36px;font-weight:800;letter-spacing:-.04em">27</span><span style="font-size:10px;font-weight:700;letter-spacing:.2em;margin-top:4px">SEP</span></span>
+      <span style="display:flex;flex-direction:column;gap:6px;min-width:0"><span style="font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#555">Family · 11 AM</span><span style="font-size:17px;font-weight:600;line-height:1.25">Imagination Play Project Pop-Up</span></span>
+    </a>
+    <a href="#m-events" data-reveal="1" class="act-dark" style="display:grid;grid-template-columns:60px minmax(0,1fr);gap:16px;align-items:start;padding:20px 0;border-bottom:1px solid #111">
+      <span style="display:flex;flex-direction:column;line-height:1"><span style="font-size:36px;font-weight:800;letter-spacing:-.04em">03</span><span style="font-size:10px;font-weight:700;letter-spacing:.2em;margin-top:4px">OCT</span></span>
+      <span style="display:flex;flex-direction:column;gap:6px;min-width:0"><span style="font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#555">Tour · 2 PM</span><span style="font-size:17px;font-weight:600;line-height:1.25">Docent-Led Tour</span></span>
+    </a>
+    <a href="#m-events" data-reveal="1" class="act-dark" style="display:grid;grid-template-columns:60px minmax(0,1fr);gap:16px;align-items:start;padding:20px 0;border-bottom:1px solid #111">
+      <span style="display:flex;flex-direction:column;line-height:1"><span style="font-size:36px;font-weight:800;letter-spacing:-.04em">16</span><span style="font-size:10px;font-weight:700;letter-spacing:.2em;margin-top:4px">OCT</span></span>
+      <span style="display:flex;flex-direction:column;gap:6px;min-width:0"><span style="font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#555">Curator Tour · 3 PM</span><span style="font-size:17px;font-weight:600;line-height:1.25">Tony Bechara: An Artist of Many Worlds</span></span>
+    </a>
+  </div>
+  <a href="#m-events" style="margin-top:24px;height:52px;display:flex;align-items:center;justify-content:center;border:1px solid #111;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase">Full calendar →</a>
+</section>
+
+<section id="m-collection" style="background:#111;color:#fff;padding:56px 20px;display:grid;gap:24px">
+  <figure data-reveal="1" style="margin:0;display:grid;gap:10px">
+    <div style="aspect-ratio:4/3;overflow:hidden"><img src="./uploads/Chase-Bayberry-Bush-800x571.jpg" alt="William Merritt Chase, The Big Bayberry Bush" loading="lazy" style="height:100%;object-fit:cover"/></div>
+    <figcaption style="font-size:11px;line-height:1.6;color:#bdbdbd">William Merritt Chase, <em>The Big Bayberry Bush</em>, ca. 1895.</figcaption>
+  </figure>
+  <span style="font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase">Permanent Collection</span>
+  <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+    <span id="m-count" style="font-size:80px;font-weight:800;line-height:.85;letter-spacing:-.05em">0</span>
+    <span style="font-size:14px;font-weight:500;max-width:14ch;line-height:1.3">paintings, sculptures &amp; works on paper</span>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+    <a href="#m-collection" style="height:52px;display:flex;align-items:center;justify-content:center;background:#fff;color:#111;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase">Artist Stories</a>
+    <a href="#m-collection" style="height:52px;display:flex;align-items:center;justify-content:center;border:1px solid #fff;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase">Browse</a>
+  </div>
+</section>
+
+<section style="padding:56px 20px">
+  <h2 data-reveal="1" style="margin:0 0 28px;font-size:44px;line-height:.9;font-weight:800;letter-spacing:-.04em;text-transform:uppercase">Parrish Online</h2>
+  <div style="border-top:1px solid #111">
+    <a href="#m-top" data-reveal="1" style="display:grid;gap:12px;padding:22px 0;border-bottom:1px solid #111">
+      <div style="display:flex;justify-content:space-between;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase"><span>Instagram</span><span>01</span></div>
+      <p style="margin:0;font-size:18px;line-height:1.3;font-weight:600;text-wrap:pretty">New, unique insights into the art and artists in our collection. →</p>
+    </a>
+    <a href="#m-top" data-reveal="1" style="display:grid;gap:12px;padding:22px 0;border-bottom:1px solid #111">
+      <div style="display:flex;justify-content:space-between;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase"><span>Education</span><span>02</span></div>
+      <p style="margin:0;font-size:18px;line-height:1.3;font-weight:600;text-wrap:pretty">Make art now: live and recorded classes and home art studios. →</p>
+    </a>
+    <a href="#m-top" data-reveal="1" style="display:grid;gap:12px;padding:22px 0;border-bottom:1px solid #111">
+      <div style="display:flex;justify-content:space-between;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase"><span>Programs</span><span>03</span></div>
+      <p style="margin:0;font-size:18px;line-height:1.3;font-weight:600;text-wrap:pretty">Inspiring talks, tours, and more featuring artists and curators. →</p>
+    </a>
+  </div>
+</section>
+
+<footer id="m-visit" style="background:#111;color:#fff;padding:56px 20px 24px;overflow:hidden;display:grid;gap:36px">
+  <div style="display:grid;gap:10px">
+    <span style="font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#bdbdbd">Museum Hours</span>
+    <p style="margin:0;font-size:20px;line-height:1.35;font-weight:600">Thursday – Monday<br/>11 AM – 5 PM</p>
+    <p style="margin:0;font-size:13px;color:#d6d6d6">Grounds open daily.</p>
+  </div>
+  <div style="display:grid;gap:10px">
+    <span style="font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#bdbdbd">Find Us</span>
+    <p style="margin:0;font-size:20px;line-height:1.35;font-weight:600">279 Montauk Highway<br/>Water Mill, NY 11976</p>
+    <a href="tel:6312832118" style="font-size:14px;color:#d6d6d6;min-height:44px;display:flex;align-items:center">631-283-2118</a>
+  </div>
+  <div style="display:grid;gap:10px">
+    <span style="font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#bdbdbd">Mailing List</span>
+    <p id="m-joined" hidden style="margin:0;font-size:17px;font-weight:600">Thank you — you’re on the list.</p>
+    <form id="m-join" style="display:flex;border-bottom:1px solid #fff">
+      <input type="email" required="" placeholder="Email address" aria-label="Email address" style="flex:1;min-width:0;background:transparent;border:0;color:#fff;font:inherit;font-size:16px;padding:12px 0;outline:none"/>
+      <button type="submit" style="background:transparent;border:0;color:#fff;font:inherit;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;cursor:pointer">Sign up →</button>
+    </form>
+  </div>
+  <div style="font-size:23vw;font-weight:800;letter-spacing:-.06em;line-height:.8;white-space:nowrap">PARRISH</div>
+  <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:11px;color:#bdbdbd"><span>© 2026 Parrish Art Museum</span><span>Privacy · Contact</span></div>
+</footer>
+
+<a href="#m-visit" id="m-bar" style="position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:55;height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;background:#111;color:#fff;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;transform:translateY(160%);transition:transform .4s cubic-bezier(.2,.7,.2,1)"><span>Open today · 11–5</span><span>Visit →</span></a>
+</div>
+
 <script src="./concept.js"></script>
+<script src="./mobile.js"></script>
 </body>
 </html>

@@ -10,9 +10,13 @@
   const motion = true; // concept prop "motion" (default true)
   if (!motion || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
+  // Desktop concept only: the mobile concept (mobile.js) handles its own elements
+  const root = document.getElementById('top');
+  const active = matchMedia('(min-width: 768px)');
+
   // Staggered reveal on scroll
   const ease = 'cubic-bezier(.2,.7,.2,1)';
-  const rv = [...document.querySelectorAll('[data-reveal]')];
+  const rv = [...root.querySelectorAll('[data-reveal]')];
   const io = new IntersectionObserver(es => es.forEach(e => {
     if (!e.isIntersecting) return; const el = e.target; io.unobserve(el);
     el.style.opacity = '1'; el.style.transform = 'none';
@@ -27,11 +31,12 @@
   });
 
   // Parallax images + scroll-velocity marquee
-  const par = [...document.querySelectorAll('[data-parallax]')];
-  const mqEl = document.querySelector('[data-marquee]');
+  const par = [...root.querySelectorAll('[data-parallax]')];
+  const mqEl = root.querySelector('[data-marquee]');
   const mq = mqEl ? mqEl.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(-50%)' }], { duration: 40000, iterations: Infinity }) : null;
   let ly = scrollY, v = 0;
   const tick = () => {
+    if (!active.matches) { requestAnimationFrame(tick); return; }
     const vh = innerHeight;
     par.forEach(el => {
       const r = el.parentElement.getBoundingClientRect(); if (r.bottom < -100 || r.top > vh + 100) return;

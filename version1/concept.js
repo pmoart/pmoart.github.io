@@ -44,8 +44,10 @@
   });
   if (count) io.observe(count);
 
-  // Scroll-driven frame loop
+  // Scroll-driven frame loop (idles while the mobile layout is showing, below 768px)
+  const active = matchMedia('(min-width: 768px)');
   const tick = () => {
+    if (!active.matches) { raf = requestAnimationFrame(tick); return; }
     const vh = window.innerHeight, vw = window.innerWidth, y = window.scrollY || document.documentElement.scrollTop;
     const cl = v => Math.max(0, Math.min(1, v));
     if (header && !menuOpen) {
